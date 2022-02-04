@@ -13,11 +13,11 @@ class DialogHelper {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                title ?? '',
+                title,
                 style: Get.textTheme.headline4,
               ),
               Text(
-                description ?? '',
+                description,
                 style: Get.textTheme.headline6,
               ),
               ElevatedButton(
@@ -26,7 +26,7 @@ class DialogHelper {
                     Get.back();
                   }
                 },
-                child: Text('Okay'),
+                child: const Text('Okay'),
               ),
             ],
           ),
@@ -46,8 +46,8 @@ class DialogHelper {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 8),
+              const CircularProgressIndicator(),
+              const SizedBox(height: 8),
               Text(message ?? 'Loading...'),
             ],
           ),
