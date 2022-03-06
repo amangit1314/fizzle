@@ -1,26 +1,33 @@
+import 'dart:typed_data';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
 import 'package:instagram_clone/responsive/responsive_layout.dart';
-import 'package:instagram_clone/responsive/web_screen_layout.dart';
-import 'package:instagram_clone/screens/home_screen.dart';
-import 'package:instagram_clone/screens/signup_screen.dart';
+import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+import '../responsive/web_screen_layout.dart';
+
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  Uint8List? _image;
   bool _isLoading = false;
 
   @override
@@ -28,19 +35,37 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _bioController.dispose();
+    _usernameController.dispose();
   }
 
-  void loginUser() async {
+  void selectImage() async {
+    Uint8List rm = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = rm;
+    });
+  }
+
+  void signUpUser() async {
     setState(() {
       _isLoading = true;
     });
 
-    String res = await AuthMethods().loginUser(
+    String res = await AuthMethods().registerUser(
       email: _emailController.text,
       password: _passwordController.text,
+      username: _usernameController.text,
+      bio: _bioController.text,
+      file: _image!,
     );
 
-    if (res == 'success') {
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (res != "success") {
+      showSnackBar(context, 'Error: $res');
+    } else {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -50,18 +75,13 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       );
-    } else {
-      showSnackBar(context, '');
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
-  void navigateToSignUp() {
+  void navigateToLogIn() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => const SignUpScreen(),
+        builder: (ctx) => const LoginScreen(),
       ),
     );
   }
@@ -85,10 +105,44 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: primaryColor,
                 height: 64,
               ),
+
+              Stack(
+                children: [
+                  _image != null
+                      ? CircleAvatar(
+                          radius: 64,
+                          backgroundImage: MemoryImage(_image!),
+                        )
+                      : const CircleAvatar(
+                          radius: 64,
+                          backgroundImage: NetworkImage(
+                            'https://images.unsplash.com/photo-1646479740771-0608d99f9176?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=60',
+                          ),
+                        ),
+                  Positioned(
+                    bottom: -10,
+                    left: 80,
+                    child: IconButton(
+                      onPressed: selectImage,
+                      icon: const Icon(Icons.add_a_photo),
+                    ),
+                  ),
+                ],
+              ),
+
               const SizedBox(
                 height: 64,
               ),
 
+              // Username
+              TextFieldInput(
+                textEditingController: _usernameController,
+                hintText: "Enter your username",
+                textInputType: TextInputType.text,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
               // Email Controller
               TextFieldInput(
                 textEditingController: _emailController,
@@ -107,9 +161,17 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 24,
               ),
+              TextFieldInput(
+                textEditingController: _bioController,
+                hintText: "Enter your bio",
+                textInputType: TextInputType.text,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
 
               InkWell(
-                onTap: loginUser,
+                onTap: signUpUser,
                 child: Container(
                   child: _isLoading
                       ? const Center(
@@ -144,16 +206,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: const Text('Don\'t have an account?'),
+                    child: const Text('Already have an account?'),
                     padding: const EdgeInsets.symmetric(vertical: 8),
                   ),
                   const SizedBox(
                     width: 4,
                   ),
                   GestureDetector(
-                    onTap: navigateToSignUp,
+                    onTap: navigateToLogIn,
                     child: Text(
-                      'Sign up',
+                      'Log In',
                       style: GoogleFonts.poppins(
                         textStyle: const TextStyle(
                           color: blueColor,
