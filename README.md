@@ -1,16 +1,54 @@
 # instagram_clone
 
-A new Flutter project.
+A social media app, which has a look similar to instagram and build with firebase auth, cloud firestore db and provider state management sol with firebase storage also 
 
-## Getting Started
+**Packages we are using:**
 
-This project is a starting point for a Flutter application.
+- flutter_svg: [link](https://pub.dev/packages/flutter_svg)
+- provider:
+- google_fonts:
+- firebase_core:
+- firebase_auth:
+- firebase_storage:
+- cloud_firestore:
+- font_awesome_icons:
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### Video Preview of Final UI
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Preview](/intro.gif)
+
+## Screens it contains:
+
+=> Onboarding
+
+=> Login
+
+=> Forgot Password
+
+=> Sign Up
+
+=> Complete Profile
+
+=> OTP Verification
+
+=> Home Page
+
+=> Product Details
+
+=> Order
+
+=> Profile (added)
+
+=> Bottom Navigation Bar (added)
+
+Now it contains all the screen, thanks for your love and support 🙏 
+
+## Photos
+![Preview](/1.png)
+![Preview](2.png)
+![Preview](3.png)
+![Preview](4.png)
+![Preview](5.png)
+![Preview](6.png)
+![Preview](7.png)
