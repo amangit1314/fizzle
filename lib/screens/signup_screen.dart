@@ -100,12 +100,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Container(),
                 flex: 2,
               ),
+
               SvgPicture.asset(
                 './assets/ic_instagram.svg',
                 color: primaryColor,
                 height: 64,
               ),
-
+              const SizedBox(height: 50),
               Stack(
                 children: [
                   _image != null
@@ -130,9 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
 
-              const SizedBox(
-                height: 64,
-              ),
+              const SizedBox(height: 50),
 
               // Username
               TextFieldInput(
