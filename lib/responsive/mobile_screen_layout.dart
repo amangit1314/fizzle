@@ -58,36 +58,36 @@ class _MobileScreenState extends State<MobileScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.home,
+              CupertinoIcons.home,
               color: _page == 0 ? primaryColor : secondaryColor,
             ),
-            label: 'Home',
+            //label: 'Home',
             backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.search,
+              CupertinoIcons.search,
               color: _page == 1 ? primaryColor : secondaryColor,
             ),
-            label: 'Search',
+            //label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.add_circle,
+              CupertinoIcons.add,
               color: _page == 2 ? primaryColor : secondaryColor,
             ),
-            label: 'Add',
+            //label: 'Add',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.favorite,
               color: _page == 3 ? primaryColor : secondaryColor,
             ),
-            label: 'Favorite',
+            //label: 'Favorite',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person,
+              CupertinoIcons.person,
               color: _page == 4 ? primaryColor : secondaryColor,
             ),
             label: 'Profile',

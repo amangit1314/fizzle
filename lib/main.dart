@@ -6,12 +6,12 @@ import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/responsive/responsive_layout.dart';
 import 'package:instagram_clone/responsive/web_screen_layout.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
-import 'package:instagram_clone/screens/signup_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:provider/provider.dart';
 
 import 'responsive/mobile_screen_layout.dart';
 
+int? isviewed;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
@@ -27,6 +27,7 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
+
   runApp(const MyApp());
 }
 
@@ -47,26 +48,29 @@ class MyApp extends StatelessWidget {
         // User persistence state
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (ctx, snapshot) {
+          builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
+              // Checking if the snapshot has any data or not
               if (snapshot.hasData) {
+                // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
                 return const ResponsiveLayout(
                   mobileScreenLayout: MobileScreen(),
                   webScreenLayout: WebScreen(),
                 );
               } else if (snapshot.hasError) {
                 return Center(
-                  child: Text('${snapshot.hasError}'),
+                  child: Text('${snapshot.error}'),
                 );
               }
             }
+
+            // means connection to future hasnt been made yet
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
-                child: CircularProgressIndicator(
-                  color: primaryColor,
-                ),
+                child: CircularProgressIndicator(),
               );
             }
+
             return const LoginScreen();
           },
         ),

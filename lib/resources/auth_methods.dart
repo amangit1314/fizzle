@@ -16,13 +16,12 @@ class AuthMethods {
   }
 
   // to register the user
-  Future<String> registerUser({
-    required String email,
-    required String password,
-    required String username,
-    required String bio,
-    required Uint8List file,
-  }) async {
+  Future<String> registerUser(
+      {required String email,
+      required String password,
+      required String username,
+      required String bio,
+      required Uint8List file}) async {
     String res = "Some error occured";
     try {
       if (email.isNotEmpty ||
@@ -81,5 +80,9 @@ class AuthMethods {
       res = res.toString();
     }
     return res;
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }

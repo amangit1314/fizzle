@@ -5,18 +5,18 @@ class Post {
   final String uid;
   final String postId;
   final String username;
-  final String datePublished;
-  final List postUrl;
-  final List profileImage;
+  final datePublished;
+  final String postUrl;
+  final String profileImage;
   final List likes;
 
-  const Post(
-    this.description,
-    this.postId,
-    this.datePublished,
-    this.postUrl,
-    this.profileImage,
-    this.likes, {
+  const Post({
+    required this.description,
+    required this.postId,
+    required this.datePublished,
+    required this.postUrl,
+    required this.profileImage,
+    required this.likes,
     required this.uid,
     required this.username,
   });
@@ -35,13 +35,14 @@ class Post {
   static Post fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return Post(
-      email: snapshot['email'] as String,
+      description: snapshot['description'] as String,
       uid: snapshot['uid'] as String,
-      photoUrl: snapshot['photoUrl'] as String,
+      postUrl: snapshot['postUrl'] as String,
       username: snapshot['username'] as String,
-      bio: snapshot['bio'] as String,
-      followers: snapshot['followers'] as List,
-      following: snapshot['following'] as List,
+      datePublished: snapshot['bio'] as String,
+      likes: snapshot['likes'] as List,
+      postId: snapshot['postId'] as String,
+      profileImage: snapshot['profileImage'] as String,
     );
   }
 }

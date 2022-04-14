@@ -5,7 +5,6 @@ import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
 import 'package:instagram_clone/responsive/responsive_layout.dart';
 import 'package:instagram_clone/responsive/web_screen_layout.dart';
-import 'package:instagram_clone/screens/home_screen.dart';
 import 'package:instagram_clone/screens/signup_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
@@ -114,11 +113,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: _isLoading
                       ? const Center(
                           child: CircularProgressIndicator(
-                            color: primaryColor,
+                            color: Colors.red,
                           ),
                         )
                       : const Text('Log in'),
                   width: double.infinity,
+                  height: 55,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: const ShapeDecoration(
