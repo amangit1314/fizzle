@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
+import 'package:instagram_clone/helper/dialog_helper.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
 import 'package:instagram_clone/utils/global_variables.dart';
-import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
-import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
 import '../utils/colors.dart';
 
@@ -32,6 +33,7 @@ class _SearchScreenState extends State<SearchScreen> {
               setState(() {
                 isShowUsers = true;
               });
+              print(_);
             },
           ),
         ),
@@ -90,24 +92,32 @@ class _SearchScreenState extends State<SearchScreen> {
                   );
                 }
 
-                return StaggeredGridView.countBuilder(
-                  crossAxisCount: 3,
-                  itemCount: (snapshot.data! as dynamic).docs.length,
-                  itemBuilder: (context, index) => Image.network(
-                    (snapshot.data! as dynamic).docs[index]['postUrl'],
-                    fit: BoxFit.cover,
+                return const GetSnackBar(
+                  messageText: Text(
+                    'This feature is under dev...',
+                    style: TextStyle(color: Colors.white),
                   ),
-                  staggeredTileBuilder: (index) => MediaQuery.of(context)
-                              .size
-                              .width >
-                          webScreenSize
-                      ? StaggeredTile.count(
-                          (index % 7 == 0) ? 1 : 1, (index % 7 == 0) ? 1 : 1)
-                      : StaggeredTile.count(
-                          (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
-                  mainAxisSpacing: 8.0,
-                  crossAxisSpacing: 8.0,
+                  backgroundColor: Colors.black,
                 );
+
+                // return StaggeredGridView.countBuilder(
+                //   crossAxisCount: 3,
+                //   itemCount: (snapshot.data! as dynamic).docs.length,
+                //   itemBuilder: (context, index) => Image.network(
+                //     (snapshot.data! as dynamic).docs[index]['postUrl'],
+                //     fit: BoxFit.cover,
+                //   ),
+                //   staggeredTileBuilder: (index) => MediaQuery.of(context)
+                //               .size
+                //               .width >
+                //           webScreenSize
+                //       ? StaggeredTile.count(
+                //           (index % 7 == 0) ? 1 : 1, (index % 7 == 0) ? 1 : 1)
+                //       : StaggeredTile.count(
+                //           (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
+                //   mainAxisSpacing: 8.0,
+                //   crossAxisSpacing: 8.0,
+                // );
               },
             ),
     );
