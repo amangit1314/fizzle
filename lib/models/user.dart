@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// a user model to separate the data from the database
 class User {
   final String email;
   final String uid;
@@ -9,6 +10,7 @@ class User {
   final List followers;
   final List following;
 
+  // constructor of the User model class
   const User({
     required this.email,
     required this.uid,
@@ -19,6 +21,7 @@ class User {
     required this.following,
   });
 
+  // mapping method to map the data into JSON format
   Map<String, dynamic> toJson() => {
         'email': email,
         'uid': uid,
@@ -29,6 +32,7 @@ class User {
         'following': following,
       };
 
+  // a method to create a user model from the snapshot
   static User fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return User(
