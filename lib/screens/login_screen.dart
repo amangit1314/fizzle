@@ -40,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (res == 'success') {
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -50,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     } else {
+      // ignore: use_build_context_synchronously
       showSnackBar(context, '');
     }
     setState(() {
@@ -76,8 +78,8 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Flexible(
-                child: Container(),
                 flex: 2,
+                child: Container(),
               ),
               SvgPicture.asset(
                 './assets/ic_instagram.svg',
@@ -87,7 +89,6 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 64,
               ),
-
               // Email Controller
               TextFieldInput(
                 textEditingController: _emailController,
@@ -110,13 +111,6 @@ class _LoginScreenState extends State<LoginScreen> {
               InkWell(
                 onTap: loginUser,
                 child: Container(
-                  child: _isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.red,
-                          ),
-                        )
-                      : const Text('Log in'),
                   width: double.infinity,
                   height: 55,
                   alignment: Alignment.center,
@@ -129,6 +123,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.red,
+                          ),
+                        )
+                      : const Text('Log in'),
                 ),
               ),
 
@@ -136,16 +137,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 12,
               ),
               Flexible(
-                child: Container(),
                 flex: 2,
+                child: Container(),
               ),
               // transition to signin up
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: const Text('Don\'t have an account?'),
                     padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: const Text('Don\'t have an account?'),
                   ),
                   const SizedBox(
                     width: 4,

@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -28,7 +29,10 @@ void main() async {
     await Firebase.initializeApp();
   }
 
-  runApp(const MyApp());
+  DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) => const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -41,6 +45,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: MaterialApp(
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
         title: 'Instagram Clone',
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark()
@@ -64,7 +70,7 @@ class MyApp extends StatelessWidget {
               }
             }
 
-            // means connection to future hasnt been made yet
+            // means connection to future has not been made yet
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
