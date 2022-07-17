@@ -72,8 +72,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => const ResponsiveLayout(
-            mobileScreenLayout: MobileScreen(),
-            webScreenLayout: WebScreen(),
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
           ),
         ),
       );
@@ -102,7 +102,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 flex: 2,
                 child: Container(),
               ),
-
               SvgPicture.asset(
                 './assets/ic_instagram.svg',
                 color: primaryColor,
@@ -165,10 +164,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 hintText: "Enter your bio",
                 textInputType: TextInputType.text,
               ),
-              const SizedBox(
-                height: 24,
-              ),
-
+              const SizedBox(height: 24),
               InkWell(
                 onTap: signUpUser,
                 child: Container(
@@ -178,21 +174,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   decoration: const ShapeDecoration(
                     color: blueColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(4),
-                      ),
-                    ),
+                        borderRadius: BorderRadius.all(Radius.circular(4))),
                   ),
                   child: _isLoading
                       ? const Center(
-                          child: CircularProgressIndicator(
-                            color: primaryColor,
-                          ),
-                        )
+                          child: CircularProgressIndicator(color: primaryColor))
                       : const Text('Log in'),
                 ),
               ),
-
               const SizedBox(
                 height: 12,
               ),

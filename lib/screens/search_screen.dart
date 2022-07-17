@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
-import 'package:instagram_clone/helper/dialog_helper.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
-import 'package:instagram_clone/utils/global_variables.dart';
 
 import '../utils/colors.dart';
 
@@ -33,6 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
               setState(() {
                 isShowUsers = true;
               });
+              // ignore: avoid_print
               print(_);
             },
           ),

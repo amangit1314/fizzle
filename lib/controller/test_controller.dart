@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:get/get.dart';
 // import 'package:http/http.dart' as http;
 import 'package:instagram_clone/controller/base_controller.dart';
@@ -11,6 +13,7 @@ class TestController extends GetxController with BaseController {
         .catchError(handleError);
     if (response == null) return;
     hideLoading();
+
     print(response);
   }
 

@@ -36,12 +36,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
         setState(() {
           _isLoading = false;
         });
+        // ignore: use_build_context_synchronously
         showSnackBar(context, 'Posted!');
         clearImage();
       } else {
         setState(() {
           _isLoading = false;
         });
+        // ignore: use_build_context_synchronously
         showSnackBar(context, res);
       }
     } catch (e) {

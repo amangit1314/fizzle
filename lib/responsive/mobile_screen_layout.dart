@@ -9,14 +9,14 @@ import 'package:instagram_clone/utils/global_variables.dart';
 // import 'package:provider/provider.dart';
 // import '././../models/user.dart' as model;
 
-class MobileScreen extends StatefulWidget {
-  const MobileScreen({Key? key}) : super(key: key);
+class MobileScreenLayout extends StatefulWidget {
+  const MobileScreenLayout({Key? key}) : super(key: key);
 
   @override
-  State<MobileScreen> createState() => _MobileScreenState();
+  State<MobileScreenLayout> createState() => _MobileScreenLayoutState();
 }
 
-class _MobileScreenState extends State<MobileScreen> {
+class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   int _page = 0;
   late PageController pageController;
 
@@ -38,7 +38,7 @@ class _MobileScreenState extends State<MobileScreen> {
 
   void onPageChanged(int page) {
     setState(() {
-      this._page = page;
+      _page = page;
     });
   }
 
@@ -47,10 +47,10 @@ class _MobileScreenState extends State<MobileScreen> {
     // model.User user = Provider.of<UserProvider>(context, listen: false).getUser;
     return Scaffold(
       body: PageView(
-        children: homeScreenItems,
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         onPageChanged: onPageChanged,
+        children: homeScreenItems,
       ),
       bottomNavigationBar: CupertinoTabBar(
         backgroundColor: mobileBackgroundColor,

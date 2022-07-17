@@ -48,7 +48,7 @@ class DialogHelper {
             children: [
               const CircularProgressIndicator(),
               const SizedBox(height: 8),
-              Text(message ?? 'Loading...'),
+              Text(message),
             ],
           ),
         ),

@@ -37,6 +37,7 @@ class AuthMethods {
           password.isNotEmpty ||
           username.isNotEmpty ||
           bio.isNotEmpty ||
+          // ignore: unnecessary_null_comparison
           file != null) {
         //  register user using firebase method {createUserWithEmailAndPassword}
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
