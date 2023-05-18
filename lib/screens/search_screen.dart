@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
 
 import '../utils/colors.dart';
@@ -21,18 +20,48 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
-        title: Form(
-          child: TextFormField(
-            controller: searchController,
-            decoration:
-                const InputDecoration(labelText: 'Search for a user...'),
-            onFieldSubmitted: (String _) {
-              setState(() {
-                isShowUsers = true;
-              });
-              // ignore: avoid_print
-              print(_);
-            },
+        title: Container(
+          height: 70,
+          width: double.infinity,
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.grey[900],
+            //borderRadius: BorderRadius.circular(20),
+          ),
+          child: Form(
+            child: Flexible(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: searchController,
+                      decoration: const InputDecoration(
+                        hintText: 'Search for a user...',
+                        hintStyle: TextStyle(
+                          color: Colors.white54, 
+                        ),
+                        border: InputBorder.none,
+                      ),
+                      onFieldSubmitted: (String _) {
+                        setState(() {
+                          isShowUsers = true;
+                        });
+                        // ignore: avoid_print
+                        print(_);
+                      },
+                    ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -71,6 +100,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                         title: Text(
                           (snapshot.data! as dynamic).docs[index]['username'],
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     );
@@ -90,32 +120,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   );
                 }
 
-                return const GetSnackBar(
-                  messageText: Text(
-                    'This feature is under dev...',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Colors.black,
+                return const Center(
+                  child: Text('Grid', style: TextStyle(color: Colors.white)),
                 );
-
-                // return StaggeredGridView.countBuilder(
-                //   crossAxisCount: 3,
-                //   itemCount: (snapshot.data! as dynamic).docs.length,
-                //   itemBuilder: (context, index) => Image.network(
-                //     (snapshot.data! as dynamic).docs[index]['postUrl'],
-                //     fit: BoxFit.cover,
-                //   ),
-                //   staggeredTileBuilder: (index) => MediaQuery.of(context)
-                //               .size
-                //               .width >
-                //           webScreenSize
-                //       ? StaggeredTile.count(
-                //           (index % 7 == 0) ? 1 : 1, (index % 7 == 0) ? 1 : 1)
-                //       : StaggeredTile.count(
-                //           (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
-                //   mainAxisSpacing: 8.0,
-                //   crossAxisSpacing: 8.0,
-                // );
               },
             ),
     );

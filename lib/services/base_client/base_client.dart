@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
@@ -36,12 +35,11 @@ class BaseClient {
       throw FetchDataException('No Internet connection', uri.toString());
     } on TimeoutException {
       throw ApiNotRespondingException(
-          'API not responded in time', uri.toString());
+        'API not responded in time',
+        uri.toString(),
+      );
     }
   }
-
-  //DELETE
-  //OTHER
 
   dynamic _processResponse(http.Response response) {
     switch (response.statusCode) {
@@ -55,17 +53,41 @@ class BaseClient {
 
       case 400:
         throw BadRequestException(
-            utf8.decode(response.bodyBytes), response.request?.url.toString(),
-            message: '', url: '');
+          utf8.decode(response.bodyBytes),
+          response.request?.url.toString(),
+          message: '',
+          url: '',
+        );
+
       case 401:
+        throw UnAuthorizedException(
+          utf8.decode(response.bodyBytes),
+          response.request!.url.toString(),
+        );
+
       case 403:
         throw UnAuthorizedException(
-            utf8.decode(response.bodyBytes), response.request!.url.toString());
+          utf8.decode(response.bodyBytes),
+          response.request!.url.toString(),
+        );
+
+      case 404:
+        throw throw InternalServerErrorException(
+          utf8.decode(response.bodyBytes),
+          response.request!.url.toString(),
+        );
+
       case 500:
+        throw ServerException(
+          utf8.decode(response.bodyBytes),
+          response.request!.url.toString(),
+        );
+
       default:
         throw FetchDataException(
-            'Error occured with code : ${response.statusCode}',
-            response.request!.url.toString());
+          'Error occured with code : ${response.statusCode}',
+          response.request!.url.toString(),
+        );
     }
   }
 }

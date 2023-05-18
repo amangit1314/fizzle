@@ -36,6 +36,28 @@
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyBHuS9HmONX5AZCKZAdFkuULhw3hxwSr_Q",
+        // authDomain: "xxx",
+        projectId: "instagram-clone-fcc-b99b8",
+        storageBucket: "instagram-clone-fcc-b99b8.appspot.com",
+        // messagingSenderId: "xxx",
+        appId: "1:874976605457:android:4423f323babde19bb2c8b0",
+        // measurementId: "xxx"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+
   <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;

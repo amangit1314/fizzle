@@ -1,6 +1,6 @@
+import 'package:instagram_clone/services/base_client/helper/dialog_helper.dart';
 
-import 'package:instagram_clone/helper/dialog_helper.dart';
-import 'package:instagram_clone/services/app_exceptions.dart';
+import '../app_exceptions.dart';
 
 class BaseController {
   void handleError(error) {

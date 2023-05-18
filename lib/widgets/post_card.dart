@@ -1,8 +1,10 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/screens/comments_screen.dart';
+import 'package:instagram_clone/services/firebase/firestore/firestore_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/global_variables.dart';
 import 'package:instagram_clone/utils/utils.dart';
@@ -14,7 +16,6 @@ import '../models/user.dart' as model;
 import '../providers/user_provider.dart';
 
 class PostCard extends StatefulWidget {
-  // ignore: prefer_typing_uninitialized_variables
   final snap;
   const PostCard({
     Key? key,
@@ -54,7 +55,7 @@ class _PostCardState extends State<PostCard> {
 
   deletePost(String postId) async {
     try {
-      await FirestoreMethods().deletePost(postId);
+      await FireStoreMethods().deletePost(postId);
     } catch (err) {
       showSnackBar(
         context,
@@ -69,19 +70,17 @@ class _PostCardState extends State<PostCard> {
     final width = MediaQuery.of(context).size.width;
 
     return Container(
-      // boundary needed for web
+      // * boundary needed for web
       decoration: BoxDecoration(
         border: Border.all(
           color: width > webScreenSize ? secondaryColor : mobileBackgroundColor,
         ),
         color: mobileBackgroundColor,
       ),
-      padding: const EdgeInsets.symmetric(
-        vertical: 10,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
-          // HEADER SECTION OF THE POST
+          // * HEADER SECTION OF THE POST
           Container(
             padding: const EdgeInsets.symmetric(
               vertical: 4,
@@ -92,14 +91,13 @@ class _PostCardState extends State<PostCard> {
                 CircleAvatar(
                   radius: 16,
                   backgroundImage: NetworkImage(
-                    widget.snap['profImage'],
+                    widget.snap['profImage'] ??
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb1tOL7dhJvW18V_wWYtBMBOLZCyfFKjkIMsNaXyWI&s',
                   ),
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8,
-                    ),
+                    padding: const EdgeInsets.only(left: 8),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,10 +155,11 @@ class _PostCardState extends State<PostCard> {
               ],
             ),
           ),
-          // IMAGE SECTION OF THE POST
+
+          // * IMAGE SECTION OF THE POST
           GestureDetector(
             onDoubleTap: () {
-              FirestoreMethods().likePost(
+              FireStoreMethods().likePost(
                 widget.snap['postId'].toString(),
                 user.uid,
                 widget.snap['likes'],
@@ -176,7 +175,7 @@ class _PostCardState extends State<PostCard> {
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   child: Image.network(
-                    widget.snap['postUrl'],
+                    widget.snap['postUrl'] ?? '',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -203,7 +202,8 @@ class _PostCardState extends State<PostCard> {
               ],
             ),
           ),
-          // LIKE, COMMENT SECTION OF THE POST
+
+          // * LIKE, COMMENT SECTION OF THE POST
           Row(
             children: <Widget>[
               LikeAnimation(
@@ -215,10 +215,8 @@ class _PostCardState extends State<PostCard> {
                           Icons.favorite,
                           color: Colors.red,
                         )
-                      : const Icon(
-                          Icons.favorite_border,
-                        ),
-                  onPressed: () => FirestoreMethods().likePost(
+                      : const Icon(Icons.favorite_border),
+                  onPressed: () => FireStoreMethods().likePost(
                     widget.snap['postId'].toString(),
                     user.uid,
                     widget.snap['likes'],
@@ -236,21 +234,22 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               IconButton(
-                  icon: const Icon(
-                    CupertinoIcons.paperplane,
-                  ),
-                  onPressed: () {}),
+                icon: const Icon(CupertinoIcons.paperplane),
+                onPressed: () {},
+              ),
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: IconButton(
-                      icon: const Icon(Icons.bookmark_border),
-                      onPressed: () {}),
+                    icon: const Icon(Icons.bookmark_border),
+                    onPressed: () {},
+                  ),
                 ),
               ),
             ],
           ),
-          //DESCRIPTION AND NUMBER OF COMMENTS
+
+          // * DESCRIPTION AND NUMBER OF COMMENTS
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -260,11 +259,11 @@ class _PostCardState extends State<PostCard> {
                 DefaultTextStyle(
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2!
+                      .titleSmall!
                       .copyWith(fontWeight: FontWeight.w800),
                   child: Text(
                     '${widget.snap['likes'].length} likes',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
                 Container(

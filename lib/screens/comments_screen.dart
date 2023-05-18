@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
-import 'package:instagram_clone/resources/firestore_methods.dart';
+import 'package:instagram_clone/services/firebase/firestore/firestore_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/comment_card.dart';
@@ -24,7 +24,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
   void postComment(String uid, String name, String profilePic) async {
     try {
-      String res = await FirestoreMethods().postComment(
+      String res = await FireStoreMethods().postComment(
         widget.postId,
         commentEditingController.text,
         uid,

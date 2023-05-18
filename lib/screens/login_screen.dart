@@ -1,34 +1,29 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:instagram_clone/resources/auth_methods.dart';
-import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
-import 'package:instagram_clone/responsive/responsive_layout.dart';
-import 'package:instagram_clone/responsive/web_screen_layout.dart';
-import 'package:instagram_clone/screens/signup_screen.dart';
-import 'package:instagram_clone/utils/colors.dart';
-import 'package:instagram_clone/utils/utils.dart';
-import 'package:instagram_clone/widgets/text_field_input.dart';
+import 'package:instagram_clone/services/firebase/auth/auth_methods.dart';
+
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout.dart';
+import '../responsive/web_screen_layout.dart';
+import '../screens/signup_screen.dart';
+import '../utils/colors.dart';
+import '../utils/global_variables.dart';
+import '../utils/utils.dart';
+import '../widgets/text_field_input.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late TextEditingController _emailController = TextEditingController();
-  late TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-  }
 
   @override
   void dispose() {
@@ -41,46 +36,39 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-
     String res = await AuthMethods().loginUser(
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
-
+        email: _emailController.text, password: _passwordController.text);
     if (res == 'success') {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ResponsiveLayout(
-            mobileScreenLayout: MobileScreenLayout(),
-            webScreenLayout: WebScreenLayout(),
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+              mobileScreenLayout: MobileScreenLayout(),
+              webScreenLayout: WebScreenLayout(),
+            ),
           ),
-        ),
-      );
-    } else {
-      // ignore: use_build_context_synchronously
-      showSnackBar(context, res.toString());
-    }
-    setState(() {
-      _isLoading = false;
-    });
-  }
+          (route) => false);
 
-  void navigateToSignUp() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => const SignUpScreen(),
-      ),
-    );
+      setState(() {
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      showSnackBar(context, res);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: MediaQuery.of(context).size.width > webScreenSize
+              ? EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 3)
+              : const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,57 +78,51 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(),
               ),
               SvgPicture.asset(
-                './assets/ic_instagram.svg',
+                'assets/ic_instagram.svg',
                 color: primaryColor,
                 height: 64,
               ),
               const SizedBox(
                 height: 64,
               ),
-              // Email Controller
               TextFieldInput(
-                textEditingController: _emailController,
-                hintText: "Enter your email",
+                hintText: 'Enter your email',
                 textInputType: TextInputType.emailAddress,
+                textEditingController: _emailController,
               ),
               const SizedBox(
                 height: 24,
               ),
               TextFieldInput(
+                hintText: 'Enter your password',
+                textInputType: TextInputType.text,
                 textEditingController: _passwordController,
                 isPass: true,
-                hintText: "Enter your password",
-                textInputType: TextInputType.text,
               ),
               const SizedBox(
                 height: 24,
               ),
-
               InkWell(
                 onTap: loginUser,
                 child: Container(
                   width: double.infinity,
-                  height: 55,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: const ShapeDecoration(
-                    color: blueColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(4),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
+                    color: blueColor,
                   ),
-                  child: _isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.red,
-                          ),
+                  child: !_isLoading
+                      ? const Text(
+                          'Log in',
                         )
-                      : const Text('Log in'),
+                      : const CircularProgressIndicator(
+                          color: primaryColor,
+                        ),
                 ),
               ),
-
               const SizedBox(
                 height: 12,
               ),
@@ -148,24 +130,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 flex: 2,
                 child: Container(),
               ),
-              // transition to signin up
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: const Text('Don\'t have an account?'),
-                  ),
-                  const SizedBox(
-                    width: 4,
+                    child: const Text(
+                      'Dont have an account?',
+                    ),
                   ),
                   GestureDetector(
-                    onTap: navigateToSignUp,
-                    child: Text(
-                      'Sign up',
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                          color: blueColor,
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const SignupScreen(),
+                      ),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: const Text(
+                        ' Signup.',
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),

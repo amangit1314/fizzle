@@ -2,9 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
-import 'package:instagram_clone/resources/firestore_methods.dart';
+import 'package:instagram_clone/services/firebase/firestore/firestore_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -13,84 +12,91 @@ class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddPostScreen> createState() => _AddPostScreenState();
+  _AddPostScreenState createState() => _AddPostScreenState();
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
+  bool isLoading = false;
   final TextEditingController _descriptionController = TextEditingController();
-  bool _isLoading = false;
-  void postImage(String uid, String username, String profileImage) async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      String res = await FirestoreMethods().uploadPost(
-        _descriptionController.text,
-        _file!,
-        uid,
-        username,
-        profileImage,
-      );
-      if (res == "success") {
-        setState(() {
-          _isLoading = false;
-        });
-        // ignore: use_build_context_synchronously
-        showSnackBar(context, 'Posted!');
-        clearImage();
-      } else {
-        setState(() {
-          _isLoading = false;
-        });
-        // ignore: use_build_context_synchronously
-        showSnackBar(context, res);
-      }
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
-  }
 
-  _selectImage(BuildContext context) async {
+  _selectImage(BuildContext parentContext) async {
     return showDialog(
-      context: context,
-      builder: (context) {
+      context: parentContext,
+      builder: (BuildContext context) {
         return SimpleDialog(
           title: const Text('Create a Post'),
-          children: [
+          children: <Widget>[
+            SimpleDialogOption(
+                padding: const EdgeInsets.all(20),
+                child: const Text('Take a photo'),
+                onPressed: () async {
+                  Navigator.pop(context);
+                  Uint8List file = await pickImage(ImageSource.camera);
+                  setState(() {
+                    _file = file;
+                  });
+                }),
+            SimpleDialogOption(
+                padding: const EdgeInsets.all(20),
+                child: const Text('Choose from Gallery'),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  Uint8List file = await pickImage(ImageSource.gallery);
+                  setState(() {
+                    _file = file;
+                  });
+                }),
             SimpleDialogOption(
               padding: const EdgeInsets.all(20),
-              child: const Text('Take a photo'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                Uint8List file = await pickImage(ImageSource.camera);
-                setState(() {
-                  _file = file;
-                });
+              child: const Text("Cancel"),
+              onPressed: () {
+                Navigator.pop(context);
               },
-            ),
-            SimpleDialogOption(
-              padding: const EdgeInsets.all(20),
-              child: const Text('Choose from gallary'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                Uint8List file = await pickImage(ImageSource.gallery);
-                setState(() {
-                  _file = file;
-                });
-              },
-            ),
-            SimpleDialogOption(
-              padding: const EdgeInsets.all(20),
-              child: const Text('Cancel'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-              },
-            ),
+            )
           ],
         );
       },
     );
+  }
+
+  void postImage(String uid, String username, String profImage) async {
+    setState(() {
+      isLoading = true;
+    });
+    // start the loading
+    try {
+      // upload to storage and db
+      String res = await FireStoreMethods().uploadPost(
+        _descriptionController.text,
+        _file!,
+        uid,
+        username,
+        profImage,
+      );
+      if (res == "success") {
+        setState(() {
+          isLoading = false;
+        });
+        // ignore: use_build_context_synchronously
+        showSnackBar(
+          context,
+          'Posted!',
+        );
+        clearImage();
+      } else {
+        if (!mounted) return;
+        showSnackBar(context, res);
+      }
+    } catch (err) {
+      setState(() {
+        isLoading = false;
+      });
+      showSnackBar(
+        context,
+        err.toString(),
+      );
+    }
   }
 
   void clearImage() {
@@ -107,87 +113,91 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
         ? Center(
             child: IconButton(
-              icon: const Icon(Icons.upload),
+              icon: const Icon(
+                Icons.upload,
+              ),
               onPressed: () => _selectImage(context),
             ),
           )
         : Scaffold(
-            backgroundColor: mobileBackgroundColor,
             appBar: AppBar(
-              title: const Text('Post to'),
-              actions: [
-                TextButton(
-                  onPressed: () => postImage(
-                    user.uid,
-                    user.username,
-                    user.photoUrl,
-                  ),
-                  child: const Text(
-                    'Post',
-                    style: TextStyle(
-                      color: Colors.blueAccent,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ],
+              backgroundColor: mobileBackgroundColor,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () => clearImage(),
+                onPressed: clearImage,
               ),
+              title: const Text(
+                'Post to',
+              ),
+              centerTitle: false,
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => postImage(
+                    userProvider.getUser.uid,
+                    userProvider.getUser.username,
+                    userProvider.getUser.photoUrl,
+                  ),
+                  child: const Text(
+                    "Post",
+                    style: TextStyle(
+                        color: Colors.blueAccent,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0),
+                  ),
+                )
+              ],
             ),
+            // POST FORM
             body: Column(
-              children: [
-                _isLoading
+              children: <Widget>[
+                isLoading
                     ? const LinearProgressIndicator()
-                    : const Padding(padding: EdgeInsets.only(top: 0)),
+                    : const Padding(padding: EdgeInsets.only(top: 0.0)),
                 const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CircleAvatar(backgroundImage: NetworkImage(user.photoUrl)),
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        userProvider.getUser.photoUrl,
+                      ),
+                    ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.4,
+                      width: MediaQuery.of(context).size.width * 0.3,
                       child: TextField(
+                        style: const TextStyle(color: Colors.white),
                         controller: _descriptionController,
                         decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Add a caption...',
-                          hintStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16,
-                          ),
-                        ),
+                            hintText: "Write a caption...",
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(color: Colors.grey)),
                         maxLines: 8,
                       ),
                     ),
                     SizedBox(
-                      width: 45,
-                      height: 45,
+                      height: 45.0,
+                      width: 45.0,
                       child: AspectRatio(
                         aspectRatio: 487 / 451,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.grey,
-                            image: DecorationImage(
-                              image: MemoryImage(_file!),
-                              fit: BoxFit.fill,
-                              alignment: FractionalOffset.topCenter,
-                            ),
-                          ),
+                              image: DecorationImage(
+                            fit: BoxFit.fill,
+                            alignment: FractionalOffset.topCenter,
+                            image: MemoryImage(_file!),
+                          )),
                         ),
                       ),
                     ),
-                    const Divider(),
                   ],
                 ),
+                const Divider(),
               ],
             ),
           );

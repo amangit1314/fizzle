@@ -1,30 +1,21 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:instagram_clone/models/posts.dart';
-import 'package:instagram_clone/resources/storage_methods.dart';
+import 'package:instagram_clone/services/firebase/storage/storage_methods.dart';
 import 'package:uuid/uuid.dart';
 
-// A class which contains several firestore methods
-class FirestoreMethods {
-  // Firebase firestore instance
+class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // a method to create a post
-  Future<String> uploadPost(String description, Uint8List file, String uid,
+  Future<dynamic> uploadPost(String description, Uint8List file, String uid,
       String username, String profImage) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";
-    // using try and catch block to handle different errors
     try {
-      // geting photo url from the firebase storage
       String photoUrl =
           await StorageMethods().uploadImageToStorage('posts', file, true);
-      // creates unique id based on time
-      String postId = const Uuid().v1();
-      // creating an object of Post and specifing its required parametric fields
+      String postId = const Uuid().v1(); // creates unique id based on time
       Post post = Post(
         description: description,
         uid: uid,
@@ -33,9 +24,8 @@ class FirestoreMethods {
         postId: postId,
         datePublished: DateTime.now(),
         postUrl: photoUrl,
-        profileImage: profImage,
+        profImage: profImage,
       );
-      // setting the data in the firebase collection posts
       _firestore.collection('posts').doc(postId).set(post.toJson());
       res = "success";
     } catch (err) {
@@ -44,10 +34,8 @@ class FirestoreMethods {
     return res;
   }
 
-  // a method for implemeting (like a post) feature
   Future<String> likePost(String postId, String uid, List likes) async {
     String res = "Some error occurred";
-    // using try and catch block to handle all cases and errors
     try {
       if (likes.contains(uid)) {
         // if the likes list contains the user uid, we need to remove it
@@ -67,16 +55,14 @@ class FirestoreMethods {
     return res;
   }
 
-  // a method for implemeting (post a post) feature
+  // Post comment
   Future<String> postComment(String postId, String text, String uid,
       String name, String profilePic) async {
     String res = "Some error occurred";
-    // using try and catch block to handle all cases and errors
     try {
       if (text.isNotEmpty) {
         // if the likes list contains the user uid, we need to remove it
         String commentId = const Uuid().v1();
-        // setting the data in the firebase collection posts to its comments
         _firestore
             .collection('posts')
             .doc(postId)
@@ -112,18 +98,13 @@ class FirestoreMethods {
     return res;
   }
 
-  // Follow User
   Future<void> followUser(String uid, String followId) async {
     try {
-      // getting uid of user from snapshot
       DocumentSnapshot snap =
           await _firestore.collection('users').doc(uid).get();
-
-      // getting the list of following from the snap
       List following = (snap.data()! as dynamic)['following'];
 
       if (following.contains(followId)) {
-        // if the list of following contains the followId, we need to remove it
         await _firestore.collection('users').doc(followId).update({
           'followers': FieldValue.arrayRemove([uid])
         });
@@ -132,7 +113,6 @@ class FirestoreMethods {
           'following': FieldValue.arrayRemove([followId])
         });
       } else {
-        // else we need to add uid to the following array
         await _firestore.collection('users').doc(followId).update({
           'followers': FieldValue.arrayUnion([uid])
         });
@@ -142,10 +122,7 @@ class FirestoreMethods {
         });
       }
     } catch (e) {
-      GetSnackBar(
-        message: e.toString(),
-        backgroundColor: Colors.red,
-      ).show();
+      print(e.toString());
     }
   }
 }

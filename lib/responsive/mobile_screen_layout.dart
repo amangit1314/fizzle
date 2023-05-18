@@ -1,13 +1,8 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/global_variables.dart';
-// import 'package:instagram_clone/providers/user_provider.dart';
-// import 'package:provider/provider.dart';
-// import '././../models/user.dart' as model;
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -32,67 +27,78 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     pageController.dispose();
   }
 
-  void navigationTapped(int page) {
-    pageController.jumpToPage(page);
-  }
-
   void onPageChanged(int page) {
     setState(() {
       _page = page;
     });
   }
 
+  void navigationTapped(int page) {
+    pageController.jumpToPage(page);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // model.User user = Provider.of<UserProvider>(context, listen: false).getUser;
     return Scaffold(
-      body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: pageController,
-        onPageChanged: onPageChanged,
-        children: homeScreenItems,
+      body: SafeArea(
+        child: PageView(
+          controller: pageController,
+          onPageChanged: onPageChanged,
+          children: homeScreenItems,
+        ),
       ),
-      bottomNavigationBar: CupertinoTabBar(
-        backgroundColor: mobileBackgroundColor,
-        onTap: navigationTapped,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              CupertinoIcons.home,
-              color: _page == 0 ? primaryColor : secondaryColor,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(top: 15.0),
+        child: CupertinoTabBar(
+          backgroundColor: mobileBackgroundColor,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: FaIcon(
+                FontAwesomeIcons.house,
+                size: 23,
+                color: (_page == 0) ? primaryColor : secondaryColor,
+              ),
+              label: '',
+              backgroundColor: primaryColor,
             ),
-            //label: 'Home',
-            backgroundColor: primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              CupertinoIcons.search,
-              color: _page == 1 ? primaryColor : secondaryColor,
+            BottomNavigationBarItem(
+                icon: FaIcon(
+                  FontAwesomeIcons.magnifyingGlass,
+                  size: 23,
+                  color: (_page == 1) ? primaryColor : secondaryColor,
+                ),
+                label: '',
+                backgroundColor: primaryColor),
+            BottomNavigationBarItem(
+                icon: FaIcon(
+                  FontAwesomeIcons.circlePlus,
+                  size: 23,
+                  color: (_page == 2) ? primaryColor : secondaryColor,
+                ),
+                label: '',
+                backgroundColor: primaryColor),
+            BottomNavigationBarItem(
+              icon: FaIcon(
+                FontAwesomeIcons.heart,
+                size: 23,
+                color: (_page == 3) ? primaryColor : secondaryColor,
+              ),
+              label: '',
+              backgroundColor: primaryColor,
             ),
-            //label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              CupertinoIcons.add,
-              color: _page == 2 ? primaryColor : secondaryColor,
+            BottomNavigationBarItem(
+              icon: FaIcon(
+                FontAwesomeIcons.person,
+                size: 23,
+                color: (_page == 4) ? primaryColor : secondaryColor,
+              ),
+              label: '',
+              backgroundColor: primaryColor,
             ),
-            //label: 'Add',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.favorite,
-              color: _page == 3 ? primaryColor : secondaryColor,
-            ),
-            //label: 'Favorite',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              CupertinoIcons.person,
-              color: _page == 4 ? primaryColor : secondaryColor,
-            ),
-            label: 'Profile',
-          ),
-        ],
+          ],
+          onTap: navigationTapped,
+          currentIndex: _page,
+        ),
       ),
     );
   }

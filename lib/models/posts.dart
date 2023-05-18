@@ -3,47 +3,46 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Post {
   final String description;
   final String uid;
-  final String postId;
   final String username;
-  // ignore: prefer_typing_uninitialized_variables
-  final datePublished;
-  final String postUrl;
-  final String profileImage;
   final List likes;
+  final String postId;
+  final DateTime datePublished;
+  final String postUrl;
+  final String profImage;
 
   const Post({
     required this.description,
+    required this.uid,
+    required this.username,
+    required this.likes,
     required this.postId,
     required this.datePublished,
     required this.postUrl,
-    required this.profileImage,
-    required this.likes,
-    required this.uid,
-    required this.username,
+    required this.profImage,
   });
-
-  Map<String, dynamic> toJson() => {
-        'description': description,
-        'uid': uid,
-        'postUrl': postUrl,
-        'username': username,
-        'datePublished': datePublished,
-        'likes': likes,
-        'postId': postId,
-        'profileImage': profileImage,
-      };
 
   static Post fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
+
     return Post(
-      description: snapshot['description'] as String,
-      uid: snapshot['uid'] as String,
-      postUrl: snapshot['postUrl'] as String,
-      username: snapshot['username'] as String,
-      datePublished: snapshot['bio'] as String,
-      likes: snapshot['likes'] as List,
-      postId: snapshot['postId'] as String,
-      profileImage: snapshot['profileImage'] as String,
-    );
+        description: snapshot["description"],
+        uid: snapshot["uid"],
+        likes: snapshot["likes"],
+        postId: snapshot["postId"],
+        datePublished: snapshot["datePublished"],
+        username: snapshot["username"],
+        postUrl: snapshot['postUrl'],
+        profImage: snapshot['profImage']);
   }
+
+  Map<String, dynamic> toJson() => {
+        "description": description,
+        "uid": uid,
+        "likes": likes,
+        "username": username,
+        "postId": postId,
+        "datePublished": datePublished,
+        'postUrl': postUrl,
+        'profImage': profImage
+      };
 }

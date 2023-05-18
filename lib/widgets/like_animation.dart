@@ -1,3 +1,5 @@
+// ignore: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
 class LikeAnimation extends StatefulWidget {
@@ -6,6 +8,7 @@ class LikeAnimation extends StatefulWidget {
   final Duration duration;
   final VoidCallback? onEnd;
   final bool smallLike;
+
   const LikeAnimation({
     Key? key,
     required this.child,
@@ -16,8 +19,7 @@ class LikeAnimation extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _LikeAnimationState createState() => _LikeAnimationState();
+  State<LikeAnimation> createState() => _LikeAnimationState();
 }
 
 class _LikeAnimationState extends State<LikeAnimation>
