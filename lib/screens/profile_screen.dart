@@ -3,10 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/services/firebase/auth/auth_methods.dart';
-import 'package:instagram_clone/services/firebase/firestore/firestore_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
-import 'package:instagram_clone/widgets/follow_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
@@ -77,6 +75,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               backgroundColor: mobileBackgroundColor,
               title: Text(userData['username'] ?? 'Username'),
               centerTitle: false,
+              actions: [
+                FirebaseAuth.instance.currentUser!.uid == widget.uid
+                    ? IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                          AuthMethods().signOut();
+                        },
+                        icon: const Icon(Icons.logout),
+                      )
+                    : Container(),
+              ],
             ),
             body: ListView(
               children: [
@@ -96,6 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Expanded(
                             flex: 1,
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   mainAxisSize: MainAxisSize.max,
@@ -103,80 +118,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     BuildStatColumn(
-                                        num: postLen, label: "posts"),
+                                      num: postLen,
+                                      label: "posts",
+                                    ),
                                     BuildStatColumn(
-                                        num: followers, label: "followers"),
+                                      num: followers,
+                                      label: "followers",
+                                    ),
                                     BuildStatColumn(
-                                        num: following, label: "following"),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    FirebaseAuth.instance.currentUser!.uid ==
-                                            widget.uid
-                                        ? Expanded(
-                                            child: FollowButton(
-                                              text: 'Sign Out',
-                                              backgroundColor:
-                                                  mobileBackgroundColor,
-                                              textColor: primaryColor,
-                                              borderColor: Colors.grey,
-                                              function: () async {
-                                                await AuthMethods().signOut();
-                                                if (!mounted) return;
-                                                Navigator.of(context)
-                                                    .pushReplacement(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const LoginScreen(),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          )
-                                        : isFollowing
-                                            ? FollowButton(
-                                                text: 'Unfollow',
-                                                backgroundColor: Colors.white,
-                                                textColor: Colors.black,
-                                                borderColor: Colors.grey,
-                                                function: () async {
-                                                  await FireStoreMethods()
-                                                      .followUser(
-                                                    FirebaseAuth.instance
-                                                            .currentUser?.uid ??
-                                                        '',
-                                                    userData['uid'],
-                                                  );
-
-                                                  setState(() {
-                                                    isFollowing = false;
-                                                    followers--;
-                                                  });
-                                                },
-                                              )
-                                            : FollowButton(
-                                                text: 'Follow',
-                                                backgroundColor: Colors.blue,
-                                                textColor: Colors.white,
-                                                borderColor: Colors.blue,
-                                                function: () async {
-                                                  await FireStoreMethods()
-                                                      .followUser(
-                                                    FirebaseAuth.instance
-                                                            .currentUser?.uid ??
-                                                        '',
-                                                    userData['uid'],
-                                                  );
-
-                                                  setState(() {
-                                                    isFollowing = true;
-                                                    followers++;
-                                                  });
-                                                },
-                                              )
+                                      num: following,
+                                      label: "following",
+                                    ),
                                   ],
                                 ),
                               ],
@@ -189,56 +141,154 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.only(top: 15),
                         child: Text(
                           userData['username'] ?? 'Username',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
                         padding: const EdgeInsets.only(top: 1),
-                        child: Text(userData['bio'] ?? 'Write bio here'),
+                        child: Text(
+                          userData['bio'] ?? 'Write bio here',
+                          maxLines: 2,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
-                const Divider(),
-                FutureBuilder(
-                  future: FirebaseFirestore.instance
-                      .collection('posts')
-                      .where('uid', isEqualTo: widget.uid)
-                      .get(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: (snapshot.data! as dynamic).docs.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 5,
-                        mainAxisSpacing: 1.5,
-                        childAspectRatio: 1,
-                      ),
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot snap =
-                            (snapshot.data! as dynamic).docs[index];
-
-                        return Container(
-                          child: Image(
-                            image: NetworkImage(snap['postUrl'] ??
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb1tOL7dhJvW18V_wWYtBMBOLZCyfFKjkIMsNaXyWI&s'),
-                            fit: BoxFit.cover,
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Divider(
+                    color: Colors.grey,
+                    height: 1,
+                  ),
+                ),
+                Column(
+                  children: [
+                    // story highlights text, with white, bold and 12 text
+                    const Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Story Highlights',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
                           ),
-                        );
-                        // return const Center(
-                        //   child: Text('Profile'),
-                        // );
-                      },
-                    );
-                  },
-                )
+                        ),
+                      ),
+                    ),
+
+                    // story highlights listview of circles
+                    SizedBox(
+                      height: 100,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.all(10),
+                            width: 60,
+                            height: 60,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.grey,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Divider(
+                        color: Colors.grey,
+                        height: 1,
+                      ),
+                    ),
+                    //tab view for all posts, and videos with icons
+                    DefaultTabController(
+                      length: 2,
+                      child: Column(
+                        children: [
+                          const TabBar(
+                            indicatorColor: Colors.white,
+                            tabs: [
+                              Tab(
+                                icon: Icon(Icons.grid_on),
+                              ),
+                              Tab(
+                                icon: Icon(Icons.video_collection),
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: TabBarView(
+                              children: [
+                                // Grid view of posts
+                                FutureBuilder<QuerySnapshot>(
+                                  future: FirebaseFirestore.instance
+                                      .collection('posts')
+                                      .where('uid', isEqualTo: widget.uid)
+                                      .get(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    if (snapshot.hasError) {
+                                      return const Center(
+                                        child: Text('Error fetching posts.'),
+                                      );
+                                    }
+
+                                    return GridView.builder(
+                                      itemCount: snapshot.data!.docs.length,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 5,
+                                        mainAxisSpacing: 1.5,
+                                        childAspectRatio: 1,
+                                      ),
+                                      itemBuilder: (context, index) {
+                                        DocumentSnapshot snap =
+                                            snapshot.data!.docs[index];
+
+                                        return Container(
+                                          child: Image.network(
+                                            snap['postUrl'] ??
+                                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb1tOL7dhJvW18V_wWYtBMBOLZCyfFKjkIMsNaXyWI&s',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                                // Video collection view
+                                const Center(
+                                  child: Text('Video Collection'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ],
             ),
           );
@@ -264,7 +314,7 @@ class BuildStatColumn extends StatelessWidget {
         Text(
           num.toString(),
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.grey,
           ),
@@ -274,7 +324,7 @@ class BuildStatColumn extends StatelessWidget {
           child: Text(
             label,
             style: const TextStyle(
-              fontSize: 15,
+              fontSize: 14,
               fontWeight: FontWeight.w400,
               color: Colors.grey,
             ),

@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram_clone/utils/colors.dart';
@@ -40,65 +41,100 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: PageView(
-          controller: pageController,
-          onPageChanged: onPageChanged,
-          children: homeScreenItems,
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
-        child: CupertinoTabBar(
-          backgroundColor: mobileBackgroundColor,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: FaIcon(
-                FontAwesomeIcons.house,
-                size: 23,
-                color: (_page == 0) ? primaryColor : secondaryColor,
-              ),
-              label: '',
-              backgroundColor: primaryColor,
+      body: Stack(
+        children: [
+          SafeArea(
+            child: PageView(
+              controller: pageController,
+              onPageChanged: onPageChanged,
+              children: homeScreenItems,
             ),
-            BottomNavigationBarItem(
-                icon: FaIcon(
-                  FontAwesomeIcons.magnifyingGlass,
-                  size: 23,
-                  color: (_page == 1) ? primaryColor : secondaryColor,
+          ),
+          Positioned(
+            bottom: 10,
+            left: 25,
+            right: 25,
+            child: ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  // margin: const EdgeInsets.only(left: 15, right: 15),
+                  padding: const EdgeInsets.only(top: 15.0, bottom: 15),
+                  // decoration radius 15
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _page = 0; // Update the current page index
+                          });
+                        },
+                        child: FaIcon(
+                          FontAwesomeIcons.grip,
+                          size: 23,
+                          color: (_page == 0) ? primaryColor : secondaryColor,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _page = 1; // Update the current page index
+                          });
+                        },
+                        child: FaIcon(
+                          FontAwesomeIcons.magnifyingGlass,
+                          size: 23,
+                          color: (_page == 1) ? primaryColor : secondaryColor,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _page = 2; // Update the current page index
+                          });
+                        },
+                        child: FaIcon(
+                          FontAwesomeIcons.camera,
+                          size: 23,
+                          color: (_page == 2) ? primaryColor : secondaryColor,
+                        ),
+                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     setState(() {
+                      //       _page = 3; // Update the current page index
+                      //     });
+                      //   },
+                      //   child: FaIcon(
+                      //     FontAwesomeIcons.video,
+                      //     size: 23,
+                      //     color: (_page == 3) ? primaryColor : secondaryColor,
+                      //   ),
+                      // ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _page = 4; // Update the current page index
+                          });
+                        },
+                        child: FaIcon(
+                          FontAwesomeIcons.userAstronaut,
+                          size: 23,
+                          color: (_page == 4) ? primaryColor : secondaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                label: '',
-                backgroundColor: primaryColor),
-            BottomNavigationBarItem(
-                icon: FaIcon(
-                  FontAwesomeIcons.circlePlus,
-                  size: 23,
-                  color: (_page == 2) ? primaryColor : secondaryColor,
-                ),
-                label: '',
-                backgroundColor: primaryColor),
-            BottomNavigationBarItem(
-              icon: FaIcon(
-                FontAwesomeIcons.heart,
-                size: 23,
-                color: (_page == 3) ? primaryColor : secondaryColor,
               ),
-              label: '',
-              backgroundColor: primaryColor,
             ),
-            BottomNavigationBarItem(
-              icon: FaIcon(
-                FontAwesomeIcons.person,
-                size: 23,
-                color: (_page == 4) ? primaryColor : secondaryColor,
-              ),
-              label: '',
-              backgroundColor: primaryColor,
-            ),
-          ],
-          onTap: navigationTapped,
-          currentIndex: _page,
-        ),
+          ),
+        ],
       ),
     );
   }

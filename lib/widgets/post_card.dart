@@ -50,7 +50,11 @@ class _PostCardState extends State<PostCard> {
         err.toString(),
       );
     }
-    setState(() {});
+    if (mounted) {
+      setState(() {
+        // Your state update code here
+      });
+    }
   }
 
   deletePost(String postId) async {
@@ -106,6 +110,8 @@ class _PostCardState extends State<PostCard> {
                           widget.snap['username'].toString(),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Colors.white,
                           ),
                         ),
                       ],
@@ -149,13 +155,17 @@ class _PostCardState extends State<PostCard> {
                             },
                           );
                         },
-                        icon: const Icon(Icons.more_vert),
+                        icon: const Icon(
+                          Icons.more_vert,
+                          color: Colors.white,
+                        ),
                       )
                     : Container(),
               ],
             ),
           ),
 
+          const SizedBox(height: 10),
           // * IMAGE SECTION OF THE POST
           GestureDetector(
             onDoubleTap: () {
@@ -262,13 +272,18 @@ class _PostCardState extends State<PostCard> {
                       .titleSmall!
                       .copyWith(fontWeight: FontWeight.w800),
                   child: Text(
-                    '${widget.snap['likes'].length} likes',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    widget.snap['likes'].length != 0
+                        ? '${widget.snap['likes'].length} likes'
+                        : '0 likes',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
                   ),
                 ),
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.only(top: 8),
+                  padding: const EdgeInsets.only(top: 2),
                   child: RichText(
                     text: TextSpan(
                       style: const TextStyle(color: primaryColor),
@@ -292,7 +307,7 @@ class _PostCardState extends State<PostCard> {
                     child: Text(
                       'View all $commentLen comments',
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 13,
                         color: secondaryColor,
                       ),
                     ),
@@ -306,12 +321,12 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Text(
                     DateFormat.yMMMd()
                         .format(widget.snap['datePublished'].toDate()),
                     style: const TextStyle(
                       color: secondaryColor,
+                      fontSize: 12,
                     ),
                   ),
                 ),

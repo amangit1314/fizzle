@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram_clone/utils/colors.dart';
 
+import '../widgets/post_card.dart';
+
 class FeedsScreen extends StatefulWidget {
   const FeedsScreen({Key? key}) : super(key: key);
 
@@ -39,16 +41,16 @@ class _FeedsScreenState extends State<FeedsScreen> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
-              // return ListView.builder(
-              //   itemCount: snapshot.data?.docs.length ?? 0,
-              //   // itemCount: 2,
-              //   itemBuilder: (context, index) {
-              //     return PostCard(snap: snapshot.data!.docs[index].data());
-              //   },
-              // );
-              return const Center(
-                child: Text('Feeds'),
+              return ListView.builder(
+                itemCount: snapshot.data?.docs.length ?? 0,
+                // itemCount: 2,
+                itemBuilder: (context, index) {
+                  return PostCard(snap: snapshot.data!.docs[index].data());
+                },
               );
+              // return const Center(
+              //   child: Text('Feeds'),
+              // );
             },
           ),
         ),

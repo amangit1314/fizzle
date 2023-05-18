@@ -17,7 +17,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Flexible(
-                flex: 2,
+                flex: 1,
                 child: Container(),
               ),
               SvgPicture.asset(
@@ -89,6 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: 'Enter your email',
                 textInputType: TextInputType.emailAddress,
                 textEditingController: _emailController,
+                icon: const Icon(Icons.alternate_email_outlined),
               ),
               const SizedBox(
                 height: 24,
@@ -97,6 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: 'Enter your password',
                 textInputType: TextInputType.text,
                 textEditingController: _passwordController,
+                icon: const Icon(Icons.fingerprint_outlined),
                 isPass: true,
               ),
               const SizedBox(
@@ -117,6 +119,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: !_isLoading
                       ? const Text(
                           'Log in',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
                         )
                       : const CircularProgressIndicator(
                           color: primaryColor,
@@ -137,6 +144,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: const Text(
                       'Dont have an account?',
+                      // style with white color and font size 12
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   GestureDetector(
@@ -148,9 +160,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: const Text(
-                        ' Signup.',
+                        ' Register',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          // color blue
+                          color: blueColor,
                         ),
                       ),
                     ),

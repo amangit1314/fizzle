@@ -25,31 +25,59 @@ class _AddPostScreenState extends State<AddPostScreen> {
       context: parentContext,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: const Text('Create a Post'),
+          // make it clearly visible 20 borderradius, and all text as white
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.grey[800],
+
+          title: const Text(
+            'Create a Post',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
           children: <Widget>[
             SimpleDialogOption(
-                padding: const EdgeInsets.all(20),
-                child: const Text('Take a photo'),
-                onPressed: () async {
-                  Navigator.pop(context);
-                  Uint8List file = await pickImage(ImageSource.camera);
-                  setState(() {
-                    _file = file;
-                  });
-                }),
-            SimpleDialogOption(
-                padding: const EdgeInsets.all(20),
-                child: const Text('Choose from Gallery'),
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  Uint8List file = await pickImage(ImageSource.gallery);
-                  setState(() {
-                    _file = file;
-                  });
-                }),
+              padding: const EdgeInsets.all(20),
+              child: const Text(
+                'Take a photo',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () async {
+                Navigator.pop(context);
+                Uint8List file = await pickImage(ImageSource.camera);
+                setState(() {
+                  _file = file;
+                });
+              },
+            ),
             SimpleDialogOption(
               padding: const EdgeInsets.all(20),
-              child: const Text("Cancel"),
+              child: const Text(
+                'Choose from Gallery',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                Uint8List file = await pickImage(ImageSource.gallery);
+                setState(() {
+                  _file = file;
+                });
+              },
+            ),
+            SimpleDialogOption(
+              padding: const EdgeInsets.all(20),
+              child: const Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -169,14 +197,21 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       ),
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      width: MediaQuery.of(context).size.width * 0.4,
                       child: TextField(
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
                         controller: _descriptionController,
                         decoration: const InputDecoration(
-                            hintText: "Write a caption...",
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(color: Colors.grey)),
+                          hintText: "Write a caption...",
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12.0,
+                          ),
+                        ),
                         maxLines: 8,
                       ),
                     ),
@@ -187,11 +222,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         aspectRatio: 487 / 451,
                         child: Container(
                           decoration: BoxDecoration(
-                              image: DecorationImage(
-                            fit: BoxFit.fill,
-                            alignment: FractionalOffset.topCenter,
-                            image: MemoryImage(_file!),
-                          )),
+                            image: DecorationImage(
+                              fit: BoxFit.fill,
+                              alignment: FractionalOffset.topCenter,
+                              image: MemoryImage(_file!),
+                            ),
+                          ),
                         ),
                       ),
                     ),
