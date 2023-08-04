@@ -1,5 +1,5 @@
-name: instagram_clone
-description: A new Flutter project.
+name: sociogram
+description: A social media application just like instagram with different ui.
 
 publish_to: "none"
 
@@ -9,28 +9,29 @@ environment:
   sdk: ">=2.19.6 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   cloud_firestore: ^4.1.0
   cupertino_icons: ^1.0.2
   device_preview: ^1.1.0
-  firebase_core: ^2.3.0
   firebase_auth: ^4.1.3
-  firebase_auth_web:
+  firebase_auth_web: null
+  firebase_core: ^2.3.0
   firebase_messaging: ^14.1.1
   firebase_storage: ^11.0.6
-  flutter_svg: ^2.0.5
+  flutter:
+    sdk: flutter
+  flutter_instagram_stories: ^1.0.3+1
   flutter_staggered_grid_view: ^0.6.2
-  flutter_launcher_icons: ^0.13.1
+  flutter_svg: ^2.0.5
+  font_awesome_flutter: ^10.2.1
   get: ^4.6.5
   google_fonts: ^4.0.4
   http: ^0.13.4
-  image_picker: ^0.8.4+10
+  image_picker: ^1.0.0
   intl: ^0.17.0
   provider: ^6.0.2
   shared_preferences: ^2.0.13
+  shimmer: ^3.0.0
   uuid: ^3.0.5
-  font_awesome_flutter: ^10.2.1
 
 dev_dependencies:
   flutter_lints: ^2.0.1
@@ -40,13 +41,9 @@ dev_dependencies:
 dependency_overrides:
   firebase_core_platform_interface: 4.8.0
 
-flutter_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/launcher.jpg"
-
 flutter:
   uses-material-design: true
 
   assets:
     - assets/
+    - assets/sociogram_logo_transparent.png
