@@ -5,14 +5,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sociogram/core/services/firebase/auth/auth_methods.dart';
 
 
-import '../responsive/mobile_screen_layout.dart';
-import '../responsive/responsive_layout.dart';
-import '../responsive/web_screen_layout.dart';
-import 'signup_screen.dart';
-import '../../core/utils/colors.dart';
-import '../../core/utils/global_variables.dart';
-import '../../core/utils/utils.dart';
-import '../../core/widgets/text_field_input.dart';
+import '../../responsive/mobile_screen_layout.dart';
+import '../../responsive/responsive_layout.dart';
+import '../../responsive/web_screen_layout.dart';
+import '../register/signup_screen.dart';
+import '../../../core/utils/colors.dart';
+import '../../../core/utils/global_variables.dart';
+import '../../../core/utils/utils.dart';
+import '../../../core/widgets/text_field_input.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);

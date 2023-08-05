@@ -13,8 +13,8 @@ import 'package:sociogram/core/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/user.dart' as model;
-import '../providers/user_provider.dart';
+import '../../../models/user.dart' as model;
+import '../../../core/providers/user_provider.dart';
 
 class PostCard extends StatefulWidget {
   final snap;

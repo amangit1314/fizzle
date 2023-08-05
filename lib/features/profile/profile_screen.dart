@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sociogram/features/auth/login_screen.dart';
+import 'package:sociogram/features/auth/login/login_screen.dart';
 import 'package:sociogram/core/services/firebase/auth/auth_methods.dart';
 import 'package:sociogram/core/utils/colors.dart';
 import 'package:sociogram/core/utils/utils.dart';

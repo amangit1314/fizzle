@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sociogram/core/providers/user_provider.dart';
 
-import 'package:sociogram/features/auth/login_screen.dart';
+import 'package:sociogram/features/auth/login/login_screen.dart';
 import 'package:sociogram/core/utils/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -29,9 +29,8 @@ class SocialMediaApp extends StatelessWidget {
         
         theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: mobileBackgroundColor,
-          primaryColor: Color(0xff81ffd9),
-          // textTheme: GoogleFonts.montserratTextTheme(),
-          textTheme: GoogleFonts.comfortaaTextTheme(),
+          primaryColor: const Color(0xff81ffd9),
+          textTheme: GoogleFonts.poppinsTextTheme(),
         ),
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),

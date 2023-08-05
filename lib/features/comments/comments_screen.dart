@@ -6,7 +6,7 @@ import 'package:sociogram/core/providers/user_provider.dart';
 import 'package:sociogram/core/services/firebase/firestore/firestore_methods.dart';
 import 'package:sociogram/core/utils/colors.dart';
 import 'package:sociogram/core/utils/utils.dart';
-import 'package:sociogram/core/widgets/comment_card.dart';
+import 'package:sociogram/features/comments/widgets/comment_card.dart';
 import 'package:provider/provider.dart';
 
 class CommentsScreen extends StatefulWidget {
