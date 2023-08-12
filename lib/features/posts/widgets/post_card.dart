@@ -4,17 +4,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sociogram/features/comments/comments_screen.dart';
-import 'package:sociogram/core/services/firebase/firestore/firestore_methods.dart';
-import 'package:sociogram/core/utils/colors.dart';
-import 'package:sociogram/core/utils/global_variables.dart';
-import 'package:sociogram/core/utils/utils.dart';
-import 'package:sociogram/core/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/services/firebase/firestore/firestore_methods.dart';
+import '../../../core/utils/colors.dart';
+import '../../../core/utils/global_variables.dart';
+import '../../../core/utils/utils.dart';
+import '../../../core/widgets/like_animation.dart';
 import '../../../models/user.dart' as model;
 import '../../../core/providers/user_provider.dart';
+import '../../comments/comments_screen.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
@@ -150,11 +150,19 @@ class _PostCardState extends State<PostCard> {
                     vertical: 12,
                     horizontal: 16,
                   ),
+                  decoration: BoxDecoration(
+                    color: Colors.black
+                        .withOpacity(0.3), // Adjust the opacity here
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ), // Add some border radius for rounded corners
+                  ),
                   child: Row(
                     children: [
                       CircleAvatar(
                         radius: 16,
-                        backgroundColor: Color(0xff81ffd9),
+                        backgroundColor: const Color(0xff81ffd9),
                         backgroundImage: NetworkImage(
                           widget.snap['profImage'] ??
                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb1tOL7dhJvW18V_wWYtBMBOLZCyfFKjkIMsNaXyWI&s',
@@ -243,14 +251,6 @@ class _PostCardState extends State<PostCard> {
                       )
                     ],
                   ),
-                  decoration: BoxDecoration(
-                    color: Colors.black
-                        .withOpacity(0.3), // Adjust the opacity here
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ), // Add some border radius for rounded corners
-                  ),
                 ),
               ),
             ),
@@ -274,7 +274,6 @@ class _PostCardState extends State<PostCard> {
                     children: [
                       Row(
                         children: [
-                          // like icon
                           IconButton(
                             icon: widget.snap['likes'].contains(user.uid)
                                 ? const Icon(

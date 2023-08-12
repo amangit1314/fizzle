@@ -2,21 +2,21 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sociogram/models/posts.dart';
-import 'package:sociogram/core/services/firebase/storage/storage_methods.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../../models/posts.dart';
+import '../storage/storage_methods.dart';
 
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<dynamic> uploadPost(String description, Uint8List file, String uid,
       String username, String profImage) async {
-    // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";
     try {
       String photoUrl =
           await StorageMethods().uploadImageToStorage('posts', file, true);
-      String postId = const Uuid().v1(); // creates unique id based on time
+      String postId = const Uuid().v1();
       Post post = Post(
         description: description,
         uid: uid,
@@ -39,12 +39,10 @@ class FireStoreMethods {
     String res = "Some error occurred";
     try {
       if (likes.contains(uid)) {
-        // if the likes list contains the user uid, we need to remove it
         _firestore.collection('posts').doc(postId).update({
           'likes': FieldValue.arrayRemove([uid])
         });
       } else {
-        // else we need to add uid to the likes array
         _firestore.collection('posts').doc(postId).update({
           'likes': FieldValue.arrayUnion([uid])
         });
@@ -56,13 +54,11 @@ class FireStoreMethods {
     return res;
   }
 
-  // Post comment
   Future<String> postComment(String postId, String text, String uid,
       String name, String profilePic) async {
     String res = "Some error occurred";
     try {
       if (text.isNotEmpty) {
-        // if the likes list contains the user uid, we need to remove it
         String commentId = const Uuid().v1();
         _firestore
             .collection('posts')
@@ -87,7 +83,6 @@ class FireStoreMethods {
     return res;
   }
 
-  // Delete Post
   Future<String> deletePost(String postId) async {
     String res = "Some error occurred";
     try {

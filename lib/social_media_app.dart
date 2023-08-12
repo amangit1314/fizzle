@@ -2,12 +2,11 @@ import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sociogram/core/providers/user_provider.dart';
-
-import 'package:sociogram/features/auth/login/login_screen.dart';
-import 'package:sociogram/core/utils/colors.dart';
 import 'package:provider/provider.dart';
 
+import 'core/providers/user_provider.dart';
+import 'core/utils/colors.dart';
+import 'features/auth/login/login_screen.dart';
 import 'features/responsive/mobile_screen_layout.dart';
 import 'features/responsive/responsive_layout.dart';
 import 'features/responsive/web_screen_layout.dart';
@@ -26,7 +25,6 @@ class SocialMediaApp extends StatelessWidget {
         builder: DevicePreview.appBuilder,
         title: 'Sociogram',
         debugShowCheckedModeBanner: false,
-        
         theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: mobileBackgroundColor,
           primaryColor: const Color(0xff81ffd9),

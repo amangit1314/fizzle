@@ -1,6 +1,5 @@
-import 'package:sociogram/core/services/base_client/helper/dialog_helper.dart';
-
 import '../app_exceptions.dart';
+import '../helper/dialog_helper.dart';
 
 class BaseController {
   void handleError(error) {

@@ -1,10 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sociogram/core/services/firebase/auth/auth_methods.dart';
 
-
+import '../../../core/services/firebase/auth/auth_methods.dart';
 import '../../responsive/mobile_screen_layout.dart';
 import '../../responsive/responsive_layout.dart';
 import '../../responsive/web_screen_layout.dart';
@@ -40,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     String res = await AuthMethods().loginUser(
         email: _emailController.text, password: _passwordController.text);
     if (res == 'success') {
+      if (!mounted) return;
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const ResponsiveLayout(
@@ -56,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = false;
       });
+      if (!mounted) return;
       showSnackBar(context, res);
     }
   }
@@ -63,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff051726),
+      backgroundColor: const Color(0xff051726),
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
@@ -91,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textEditingController: _passwordController,
                 icon: const Icon(Icons.fingerprint_outlined, size: 18),
                 isPass: true,
-                suffixIcon: Icon(Icons.visibility, size: 18),
+                suffixIcon: const Icon(Icons.visibility, size: 18),
               ),
               const SizedBox(height: 10),
               Row(

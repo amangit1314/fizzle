@@ -2,11 +2,13 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sociogram/core/providers/user_provider.dart';
-import 'package:sociogram/core/services/firebase/firestore/firestore_methods.dart';
-import 'package:sociogram/core/utils/colors.dart';
-import 'package:sociogram/core/utils/utils.dart';
+
 import 'package:provider/provider.dart';
+
+import '../../core/providers/user_provider.dart';
+import '../../core/services/firebase/firestore/firestore_methods.dart';
+import '../../core/utils/colors.dart';
+import '../../core/utils/utils.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -25,12 +27,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
       context: parentContext,
       builder: (BuildContext context) {
         return SimpleDialog(
-          // make it clearly visible 20 borderradius, and all text as white
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
           backgroundColor: Colors.grey[800],
-
           title: const Text(
             'Create a Post',
             style: TextStyle(
@@ -153,8 +153,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
           )
         : Scaffold(
-          backgroundColor: const Color(0xff051726),
-     
+            backgroundColor: const Color(0xff051726),
+
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
@@ -200,9 +200,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     CircleAvatar(
                       backgroundImage: NetworkImage(
                         userProvider.getUser.photoUrl,
-                        
                       ),
-                      backgroundColor: Color(0xff81ffd9),
+                      backgroundColor: const Color(0xff81ffd9),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.4,

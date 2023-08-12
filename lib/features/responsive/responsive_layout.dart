@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sociogram/core/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/providers/user_provider.dart';
 import '../../core/utils/global_variables.dart';
 
 class ResponsiveLayout extends StatefulWidget {

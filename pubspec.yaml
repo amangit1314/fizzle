@@ -1,4 +1,4 @@
-name: sociogram
+name: sync_stream
 description: A social media application just like instagram with different ui.
 
 publish_to: "none"
@@ -11,23 +11,23 @@ environment:
 dependencies:
   cloud_firestore: ^4.1.0
   cupertino_icons: ^1.0.2
-  device_preview: ^1.1.0
+  device_preview:
   firebase_auth: ^4.1.3
-  firebase_auth_web: null
+  firebase_auth_web:
   firebase_core: ^2.3.0
   firebase_messaging: ^14.1.1
   firebase_storage: ^11.0.6
   flutter:
     sdk: flutter
   flutter_instagram_stories: ^1.0.3+1
-  flutter_staggered_grid_view: ^0.6.2
+  flutter_staggered_grid_view: ^0.7.0
   flutter_svg: ^2.0.5
   font_awesome_flutter: ^10.2.1
   get: ^4.6.5
-  google_fonts: ^4.0.4
-  http: ^0.13.4
+  google_fonts: ^5.1.0
+  http: ^1.1.0
   image_picker: ^1.0.0
-  intl: ^0.17.0
+  intl:
   provider: ^6.0.2
   shared_preferences: ^2.0.13
   shimmer: ^3.0.0

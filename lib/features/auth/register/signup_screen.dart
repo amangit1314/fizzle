@@ -1,11 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sociogram/core/services/firebase/auth/auth_methods.dart';
-
+import '../../../core/services/firebase/auth/auth_methods.dart';
 import '../../responsive/mobile_screen_layout.dart';
 import '../../responsive/responsive_layout.dart';
 import '../../responsive/web_screen_layout.dart';
@@ -55,6 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _isLoading = false;
       });
 
+      if (!mounted) return;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const ResponsiveLayout(
@@ -67,7 +66,7 @@ class _SignupScreenState extends State<SignupScreen> {
       setState(() {
         _isLoading = false;
       });
-
+      if (!mounted) return;
       showSnackBar(context, res);
     }
   }
@@ -82,7 +81,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff051726),
+      backgroundColor: const Color(0xff051726),
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
@@ -95,7 +94,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 flex: 1,
                 child: Container(),
               ),
-              Text(
+              const Text(
                 'Sociogram',
                 style: TextStyle(
                   fontSize: 24,
@@ -110,7 +109,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ? CircleAvatar(
                           radius: 55,
                           backgroundImage: MemoryImage(_image!),
-                          backgroundColor: Color(0xff81ffd9),
+                          backgroundColor: const Color(0xff81ffd9),
                         )
                       : const CircleAvatar(
                           radius: 55,
@@ -123,10 +122,11 @@ class _SignupScreenState extends State<SignupScreen> {
                     left: 68,
                     child: CircleAvatar(
                       radius: 24,
-                      backgroundColor: Color(0xff051726),
+                      backgroundColor: const Color(0xff051726),
                       child: CircleAvatar(
                         radius: 18,
-                        backgroundColor: Color(0xff051726).withOpacity(.7),
+                        backgroundColor:
+                            const Color(0xff051726).withOpacity(.7),
                         child: Center(
                           child: IconButton(
                             onPressed: selectImage,
@@ -163,7 +163,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 textEditingController: _passwordController,
                 icon: const Icon(Icons.fingerprint_outlined, size: 18),
                 isPass: true,
-                suffixIcon: Icon(Icons.visibility),
+                suffixIcon: const Icon(Icons.visibility),
               ),
               const SizedBox(height: 20),
               TextFieldInput(
@@ -179,7 +179,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 15),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(4)),
                     color: Color(0xff81ffd9), // Changed button color here
                   ),

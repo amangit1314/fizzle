@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sociogram/models/user.dart';
-import 'package:sociogram/core/providers/user_provider.dart';
-import 'package:sociogram/core/services/firebase/firestore/firestore_methods.dart';
-import 'package:sociogram/core/utils/colors.dart';
-import 'package:sociogram/core/utils/utils.dart';
-import 'package:sociogram/features/comments/widgets/comment_card.dart';
 import 'package:provider/provider.dart';
+
+import '../../core/providers/user_provider.dart';
+import '../../core/services/firebase/firestore/firestore_methods.dart';
+import '../../core/utils/colors.dart';
+import '../../core/utils/utils.dart';
+import '../../models/user.dart';
+import 'widgets/comment_card.dart';
 
 class CommentsScreen extends StatefulWidget {
   final postId;
@@ -97,7 +98,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
               CircleAvatar(
                 backgroundImage: NetworkImage(user.photoUrl),
                 radius: 18,
-                backgroundColor: Color(0xff81ffd9),
+                backgroundColor: const Color(0xff81ffd9),
               ),
               Expanded(
                 child: Padding(
@@ -105,13 +106,12 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   child: TextField(
                     controller: commentEditingController,
                     decoration: InputDecoration(
-                      hintText: 'Comment as ${user.username}',
-                      border: InputBorder.none,
-                      hintStyle: GoogleFonts.comfortaa(
-                        color: Colors.grey,
-                        fontSize: 14,
-                      )
-                    ),
+                        hintText: 'Comment as ${user.username}',
+                        border: InputBorder.none,
+                        hintStyle: GoogleFonts.comfortaa(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        )),
                   ),
                 ),
               ),
