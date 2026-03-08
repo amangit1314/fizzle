@@ -24,17 +24,17 @@ dependencies:
   flutter_svg: ^2.0.5
   font_awesome_flutter: ^10.2.1
   get: ^4.6.5
-  google_fonts: ^5.1.0
+  google_fonts: ^6.1.0
   http: ^1.1.0
   image_picker: ^1.0.0
   intl:
   provider: ^6.0.2
   shared_preferences: ^2.0.13
   shimmer: ^3.0.0
-  uuid: ^3.0.5
+  uuid: ^4.2.2
 
 dev_dependencies:
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
 
